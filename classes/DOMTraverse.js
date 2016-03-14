@@ -6,6 +6,13 @@ export class DOMTraverse{
   }
   render(root,callback){
 
+    const events = {
+      clicked: () => {},
+      enter: () => {},
+      leave: () => {}
+    };
+    this.events = events;
+
     let level = 0;
     let parent = document.createElement('div');
     this.el = parent;
@@ -22,7 +29,12 @@ export class DOMTraverse{
       let html = '';
       if(node.id) html += `id="${node.id}"`;
       if(node.className) html += `class="${node.className}"`;
-      el.innerHTML = `&lt; ${node.nodeName.toLowerCase()} ${html} &gt;`;
+      el.innerHTML = `&lt;${node.nodeName.toLowerCase()} ${html}&gt;`;
+      el.style.zIndex = level;
+      el.style.display = "block";
+      el.onmouseenter = () => { events.enter(el,node) }
+      el.onmouseleave = () => { events.leave(el,node) }
+      el.onclick = (e) => { e.stopPropagation(); events.clicked(el,node) }
 
       el.parent = parent;
       parent.appendChild(el);
@@ -44,7 +56,7 @@ export class DOMTraverse{
   toString(){
     return this.el.innerHTML;
   }
-  toJson(){
-
+  getEvents(){
+    return this.events;
   }
 }

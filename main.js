@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 
-import { DOMTraverse } from './classes/DOMTraverse';
+import {Outliner} from './components/Outliner';
 
-const domTree = new DOMTraverse;
-const tree = domTree.render(document.getElementById('root')).toString();
-
-document.getElementById('root').innerHTML = tree;
+const outliner = new Outliner(
+  document.getElementById('root'),
+  document.getElementById('outliner'))
+    .render();
